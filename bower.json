@@ -1,0 +1,8 @@
+{
+  "name": "lending-club-app",
+  "dependencies": {
+    "bootstrap": "~3.1.0",
+    "jquery": "~2.1.0",
+    "seiyria-bootstrap-slider": "~4.0.1"
+  }
+}
