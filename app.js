@@ -18,8 +18,8 @@ yh = yhat.init("greg",
 var examples = [
   // high prob
   {
-      "last_fico_range_high" : 545,
-      "last_fico_range_low" : 500,
+      "last_fico_range_high" : 550,
+      "last_fico_range_low" : 495,
       "revol_util" : 20,
       "inq_last_6mths" : 1,
       "home_ownership" : "MORTGAGE",
@@ -28,8 +28,8 @@ var examples = [
   },
   // med prob
   {
-      "last_fico_range_high" : 645,
-      "last_fico_range_low" : 550,
+      "last_fico_range_high" : 650,
+      "last_fico_range_low" : 545,
       "revol_util" : 60,
       "inq_last_6mths" : 6,
       "home_ownership" : "MORTGAGE",
