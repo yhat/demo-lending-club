@@ -75,20 +75,15 @@ p + geom_density() +
 df.term <- subset(df, year_issued < 2012)
 df.term$home_ownership <- factor(df.term$home_ownership)
 df.term$is_rent <- df.term$home_ownership=="RENT"
-df.term$fico_range <- factor(df.term$fico_range)
-df.term$fico_ordered <- as.numeric(df.term$fico_range)
 
 idx <- runif(nrow(df.term)) > 0.75
 train <- df.term[idx==FALSE,]
 test <- df.term[idx==TRUE,]
 
+my.glm <- glm(is_bad ~ last_fico_range_low + last_fico_range_high +  is_rent, data=train
+              , na.action=na.omit, family=binomial())
 
-rf <- randomForest(factor(is_bad) ~ last_fico_range_high + last_fico_range_low +
-                     pub_rec_bankruptcies + revol_util + inq_last_6mths + is_rent,
-                   type="classification", data=train, importance=TRUE, na.action=na.omit)
-my.glm <- glm(is_bad ~ last_fico_range_high + last_fico_range_low +
-                pub_rec_bankruptcies + revol_util + inq_last_6mths + is_rent, data=train
-              ,na.action=na.omit, family=binomial())
+my.glm$data <- NULL
 summary(my.glm)
 ######################################
 
@@ -96,14 +91,18 @@ library(yhatr)
 
 # define external dependencies
 model.require <- function() {
-  library(randomForest)
+}
+
+model.transform <- function(df) {
+  df
 }
 
 # execute your code/model
 model.predict <- function(df) {
   df$is_rent <- df$home_ownership=="RENT"
-  df$prob_default <- predict(my.glm, newdata=df, type="response")
-  df
+  output <- data.frame(prob_default=predict(my.glm, newdata=df, type="response"))
+  output$decline_code <- ifelse(output$prob_default > 0.3, "Credit score too low", "")
+  output
 }
 model.predict(df[1,])
 
