@@ -10,9 +10,7 @@ var express = require('express'),
   yhat = require('yhat');
 
 
-yh = yhat.init("greg",
-               "fCVZiLJhS95cnxOrsp5e2VSkk0GfypZqeRCntTD1nHA",
-               "http://cloud.yhathq.com/");
+yh = yhat.init("demo-master", "", "http://cloud.yhathq.com/");
 
 
 var examples = [
