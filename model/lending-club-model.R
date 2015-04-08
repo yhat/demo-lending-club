@@ -107,8 +107,8 @@ model.predict <- function(df) {
 model.predict(df[1,])
 
 yhat.config <- c(
-  username="greg",
-  apikey="fCVZiLJhS95cnxOrsp5e2VSkk0GfypZqeRCntTD1nHA",
+  username="YOUR USERNAME",
+  apikey="YOUR APIKEY",
   env="http://cloud.yhathq.com/"
 )
 yhat.deploy("LendingClub")
