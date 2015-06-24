@@ -7,7 +7,7 @@ var express = require('express'),
   yhat = require('yhat');
 
 
-yh = yhat.init(process.env.YHAT_USERNAME, process.env.YHAT_APIKEY, "http://sandbox.yhathq.com/");
+yh = yhat.init(process.env.YHAT_USERNAME, process.env.YHAT_APIKEY, "https://sandbox.yhathq.com/");
 
 
 var examples = [
