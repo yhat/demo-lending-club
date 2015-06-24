@@ -1,6 +1,3 @@
-/* 
- * Dependencies
- */
 var express = require('express'),
   path = require('path'),
   fs = require('fs'),
