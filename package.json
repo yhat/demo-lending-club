@@ -14,7 +14,7 @@
     "express": "3.3.4",
     "express3-handlebars": "~0.5.0",
     "less-middleware": "~0.1.14",
-    "yhat": "^5.1.0"
+    "yhat": "^0.5.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
