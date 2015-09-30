@@ -89,26 +89,29 @@ summary(my.glm)
 
 library(yhatr)
 
+
 # define external dependencies
 model.require <- function() {
-}
-
-model.transform <- function(df) {
-  df
+  library(plyr)
 }
 
 # execute your code/model
 model.predict <- function(df) {
   df$is_rent <- df$home_ownership=="RENT"
-  output <- data.frame(prob_default=predict(my.glm, newdata=df, type="response"))
+  prediction <- predict(my.glm, newdata=df, type="response")
+  
+  
+  output <- data.frame(prob_default=prediction)
+#   output$score <- round(1000 - 1000*prediction, 0)
   output$decline_code <- ifelse(output$prob_default > 0.3, "Credit score too low", "")
+  
   output
 }
 model.predict(df[1,])
 
 yhat.config <- c(
-  username="YOUR USERNAME",
-  apikey="YOUR APIKEY",
-  env="http://cloud.yhathq.com/"
+  username="demo-master",
+  apikey="4a662eb13647cfb9ed4ca36c5e95c7b3",
+  env="http://sandbox.yhathq.com/"
 )
 yhat.deploy("LendingClub")
