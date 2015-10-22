@@ -6,8 +6,9 @@ library(reshape2)
 library(ggplot2)
 
 
-file <- "~/Dropbox-Yhat/yhat-box/datasets/lendingclub/LoanStats3a.csv"
+file <- ./LoanStats3a.csv"
 df <- read.csv(file, h=T, stringsAsFactors=F, skip=1)
+df.head <- head(df, 100)
 #take a peak...
 head(df)
 
@@ -85,6 +86,13 @@ my.glm <- glm(is_bad ~ last_fico_range_low + last_fico_range_high +  is_rent, da
 
 my.glm$data <- NULL
 summary(my.glm)
+
+translateToScore <- function(x) {
+  # takes log odds and converts them to a traditional credit score between 300 and 850
+  round(1000 - 1000*x, 0)
+}
+
+
 ######################################
 
 library(yhatr)
@@ -102,7 +110,7 @@ model.predict <- function(df) {
   
   
   output <- data.frame(prob_default=prediction)
-#   output$score <- round(1000 - 1000*prediction, 0)
+  output$score <- translateToScore(prediction)
   output$decline_code <- ifelse(output$prob_default > 0.3, "Credit score too low", "")
   
   output
