@@ -9,7 +9,7 @@ var express = require('express'),
 
 yh = yhat.init(
     process.env.YHAT_USERNAME, process.env.YHAT_APIKEY,
-    "http://sandbox.yhathq.com/"
+    "https://sandbox.yhathq.com/"
 );
 
 
