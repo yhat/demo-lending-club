@@ -65,22 +65,6 @@ $(document).ready(function() {
           Applicant: 'coral'
         },
       },
-      tooltip: {
-        contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
-          if (score) {
-            score = Math.round(score, 0);
-          }
-
-          var rows = [
-            "<tr><th>Applicant</th><th>" + (score || "") + "</th></tr>",
-            "<tr><td>Vehicle Value ($)</td><td>" + $("[name='veh_value']").val() + "</td></tr>",
-            "<tr><td>Exposure</td><td>" + $("[name='exposure']").val() + "</td></tr>",
-            "<tr><td>Body Type</td><td>" + $("[name='veh_body']").val() + "</td></tr>",
-            "<tr><td>Vehicle Age</td><td>" + $("[name='veh_age']").val() + "</td></tr>",
-          ].join("\n");
-          return "<table style='background-color: white;' class='table table-bordered'>" + rows + "</table>"
-        }
-      },
       point: {
         r: 10
       },
@@ -140,21 +124,6 @@ $(document).ready(function() {
           probability: '#00a4e4',
           Applicant: 'coral'
         },
-      },
-      tooltip: {
-        contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
-          if (probability) {
-            probability = Math.round(probability, 2);
-          }
-          var rows = [
-            "<tr><th>Applicant</th><th>" + (probability || "") + "</th></tr>",
-            "<tr><td>Vehicle Value ($)</td><td>" + $("[name='veh_value']").val() + "</td></tr>",
-            "<tr><td>Exposure</td><td>" + $("[name='exposure']").val() + "</td></tr>",
-            "<tr><td>Body Type</td><td>" + $("[name='veh_body']").val() + "</td></tr>",
-            "<tr><td>Vehicle Age</td><td>" + $("[name='veh_age']").val() + "</td></tr>",
-          ].join("\n");
-          return "<table style='background-color: white;' class='table table-bordered'>" + rows + "</table>"
-        }
       },
       point: {
         r: 10
