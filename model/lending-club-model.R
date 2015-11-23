@@ -5,8 +5,7 @@ library(randomForest)
 library(reshape2)
 library(ggplot2)
 
-
-file <- ./LoanStats3a.csv"
+file <- "./LoanStats3a.csv"
 df <- read.csv(file, h=T, stringsAsFactors=F, skip=1)
 df.head <- head(df, 100)
 #take a peak...
@@ -81,15 +80,16 @@ idx <- runif(nrow(df.term)) > 0.75
 train <- df.term[idx==FALSE,]
 test <- df.term[idx==TRUE,]
 
-my.glm <- glm(is_bad ~ last_fico_range_low + last_fico_range_high +  is_rent, data=train
+my.glm <- glm(I(is_bad==FALSE) ~ last_fico_range_low + last_fico_range_high +  is_rent, data=train
               , na.action=na.omit, family=binomial())
 
 my.glm$data <- NULL
 summary(my.glm)
 
-translateToScore <- function(x) {
+translateToScore <- function(df) {
   # takes log odds and converts them to a traditional credit score between 300 and 850
-  round(1000 - 1000*x, 0)
+  baseline <- 600
+  baseline + predict(my.glm, newdata=df) * (40 / log(2))
 }
 
 
@@ -108,10 +108,9 @@ model.predict <- function(df) {
   df$is_rent <- df$home_ownership=="RENT"
   prediction <- predict(my.glm, newdata=df, type="response")
   
-  
-  output <- data.frame(prob_default=prediction)
-  output$score <- translateToScore(prediction)
-  output$decline_code <- ifelse(output$prob_default > 0.3, "Credit score too low", "")
+  output <- data.frame(probability=prediction)
+  output$score <- translateToScore(df)
+  output$decline_code <- ifelse(output$probability > 0.3, "Credit score too low", "")
   
   output
 }
@@ -120,6 +119,6 @@ model.predict(df[1,])
 yhat.config <- c(
   username="demo-master",
   apikey="4a662eb13647cfb9ed4ca36c5e95c7b3",
-  env="http://sandbox.yhathq.com/"
+  env="https://sandbox.yhathq.com/"
 )
 yhat.deploy("LendingClub")

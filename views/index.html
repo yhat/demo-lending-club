@@ -1,0 +1,90 @@
+
+<div class="row text-center">
+  <object data="{{ logo }}" type="image/png" style="max-height: 200px;">
+    <img src="img/yhat.png" style="max-height: 200px;"/>
+  </object>
+</div>
+<hr>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <form id="applicant" class="form-horizontal">
+        <fieldset>
+          <legend>Applicant</legend>
+          <div class="form-group">
+              <label for="last_fico_range_low" class="col-sm-4 control-label">Min FICO Score</label>
+              <div class="col-sm-8">
+                  <input type="number" class="form-control" name="last_fico_range_low" min="95" max="845" step="50" value="{{ last_fico_range_low }}">
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="last_fico_range_high" class="col-sm-4 control-label">Max FICO Score</label>
+              <div class="col-sm-8">
+                  <input type="number" class="form-control" name="last_fico_range_high" min="100" max="850" step="50" value="{{ last_fico_range_high}}">
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="revol_util" class="col-sm-4 control-label">Revolving Line Utilization</label>
+              <div class="col-sm-8">
+                  <input type="number" class="form-control" name="revol_util" min="0" max="100" step="10" value="{{ revol_util }}">
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="inq_last_6mths" class="col-sm-4 control-label">Credit Inquiries Past 6m</label>
+              <div class="col-sm-8">
+                  <input type="number" class="form-control" name="inq_last_6mths" min="0" max="10" value="{{ inq_last_6mths }}">
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="home_ownership" class="col-sm-4 control-label">Home Ownership</label>
+              <div class="col-sm-8">
+                  <select name="home_ownership" class="form-control">
+                      <option>RENT</option>
+                      <option>OWN</option>
+                      <option>MORTGAGE</option>
+                  </select>
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="annual_inc" class="col-sm-4 control-label">Annual Income</label>
+              <div class="col-sm-8">
+                  <input type="number" class="form-control" name="annual_inc" min="10000" max="1000000" step="5000" value="{{ annual_inc }}" >
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="loan_amnt" class="col-sm-4 control-label">Loan Amount</label>
+              <div class="col-sm-8">
+                  <input type="number" class="form-control" name="loan_amnt" min="1000" max="35000" step="1000" value="{{ loan_amnt }}">
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-2 col-lg-offset-6">
+              <button type="submit" class="btn btn-primary">Score</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div id="prob-container" class="col-sm-6 hide">
+      <h4 class="text-center">Claim Probability Distribution</h4>
+      <div id="chart-2"></div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-sm-6">
+      <h4 class="text-center">Raw Output</h4>
+      <pre id="raw-output"></pre>
+    </div>
+    <div id="score-container" class="col-sm-6 hide">
+      <h4 class="text-center">Applicant Score Distribution</h4>
+      <div id="chart-1"></div>
+    </div>
+  </div>
+</div>
