@@ -10,7 +10,6 @@ bodyParser = require("body-parser")
 multer  = require('multer')
 compression = require("compression")
 session = require("express-session")
-less = require("less-middleware")
 yhat = require('yhat')
 
 examples = [
@@ -76,9 +75,7 @@ app.use session({
   saveUninitialized: true
 })
 
-app.use less(path.join(__dirname, "public"), {}, {}, { sourceMap: true, compress: true })
 app.use express.static(path.join(__dirname, "public"))
-
 
 # Routes
 app.get "/", (req, res) ->
@@ -107,7 +104,7 @@ app.post "/logo", upload.single('logo'), (req, res) ->
 app.use (req, res, next) ->
   err = new Error("Not Found")
   err.status = 404
-  res.render "404", { title: "404 | Whoops" }
+  res.render "error", { title: "404 | Whoops" }
 
 # development error handler
 if app.get("env") is "development"
