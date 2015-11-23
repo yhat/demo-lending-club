@@ -18,6 +18,5 @@ npm-debug.log
 *.swo
 .DS_Store
 
-public/css/styles.css
 
 img/demo-logo.png
