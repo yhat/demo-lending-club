@@ -45,7 +45,7 @@ examples = [
   }
 ]
 
-yh = yhat.init("demo-master", "4a662eb13647cfb9ed4ca36c5e95c7b3", "https://sandbox.yhathq.com/")
+yh = yhat.init("demo-master", "4a662eb13647cfb9ed4ca36c5e95c7b3", "http://sandbox.yhathq.com/")
 upload = multer({ dest: 'uploads/' })
 app = express()
 
