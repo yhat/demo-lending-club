@@ -45,8 +45,8 @@ examples = [
   }
 ]
 
-# yh = yhat.init("demo-master", "4a662eb13647cfb9ed4ca36c5e95c7b3", "http://sandbox.yhathq.com/")
-yh = yhat.init("greg", "77ce101c3c7f24cc084e691935adaedb", "https://sandbox.yhathq.com/")
+yh = yhat.init("demo-master", "4a662eb13647cfb9ed4ca36c5e95c7b3", "https://sandbox.yhathq.com/")
+# yh = yhat.init("greg", "77ce101c3c7f24cc084e691935adaedb", "https://sandbox.yhathq.com/")
 upload = multer({ dest: 'uploads/' })
 app = express()
 
@@ -86,7 +86,7 @@ app.get "/", (req, res) ->
   res.render "index", data
 
 app.post "/", (req, res) ->
-  yh.predict "LendingTestModel", req.body, (err, result) ->
+  yh.predict "LendingClub", req.body, (err, result) ->
     res.send(result)
 
 app.get "/logo", (req, res) ->
