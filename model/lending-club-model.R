@@ -5,6 +5,7 @@ library(randomForest)
 library(reshape2)
 library(ggplot2)
 
+setwd("~/repos/yhat/demos/heroku-demos/demo-lending-club/model/")
 file <- "./LoanStats3a.csv"
 df <- read.csv(file, h=T, stringsAsFactors=F, skip=1)
 df.head <- head(df, 100)
@@ -92,6 +93,8 @@ translateToScore <- function(df) {
   baseline + predict(my.glm, newdata=df) * (40 / log(2))
 }
 
+predict(my.glm)
+
 
 ######################################
 
@@ -108,9 +111,9 @@ model.predict <- function(df) {
   df$is_rent <- df$home_ownership=="RENT"
   prediction <- predict(my.glm, newdata=df, type="response")
   
-  output <- data.frame(probability=prediction)
-  output$score <- translateToScore(df)
-  output$decline_code <- ifelse(output$probability > 0.3, "Credit score too low", "")
+  output <- data.frame(prob_default=prediction)
+#   output$score <- translateToScore(df)
+  output$decline_code <- ifelse(output$prob_default > 0.3, "Credit score too low", "")
   
   output
 }
@@ -121,4 +124,5 @@ yhat.config <- c(
   apikey="4a662eb13647cfb9ed4ca36c5e95c7b3",
   env="https://sandbox.yhathq.com/"
 )
+
 yhat.deploy("LendingClub")
