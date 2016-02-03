@@ -66,7 +66,9 @@ class LoanModel(YhatModel):
         }
         
         return output
+
 df_term[features].head()
+
 test = {
     "last_fico_range_low": 705,
     "last_fico_range_high": 732,

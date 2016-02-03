@@ -1,7 +1,6 @@
 library(stringr)
 library(plyr)
 library(lubridate)
-library(randomForest)
 library(reshape2)
 library(ggplot2)
 
@@ -44,6 +43,8 @@ df$earliest_cr_line <- as.Date(df$earliest_cr_line)
 df$revol_util <- str_replace_all(df$revol_util, "[%]", "")
 df$revol_util <- as.numeric(df$revol_util)
 
+detach("package:lubridate", unload=TRUE)
+
 outcomes <- ddply(df, .(year_issued, month_issued), function(x) {
   c("percent_bad"=sum(x$is_bad) / nrow(x),
     "n_loans"=nrow(x))
@@ -81,7 +82,7 @@ idx <- runif(nrow(df.term)) > 0.75
 train <- df.term[idx==FALSE,]
 test <- df.term[idx==TRUE,]
 
-my.glm <- glm(I(is_bad==FALSE) ~ last_fico_range_low + last_fico_range_high +  is_rent, data=train
+my.glm <- glm(I(is_bad==TRUE) ~ last_fico_range_low + last_fico_range_high +  is_rent, data=train
               , na.action=na.omit, family=binomial())
 
 my.glm$data <- NULL
@@ -100,11 +101,7 @@ predict(my.glm)
 
 library(yhatr)
 
-
-# define external dependencies
-model.require <- function() {
-  library(plyr)
-}
+yhat.library(plyr)
 
 # execute your code/model
 model.predict <- function(df) {
@@ -124,5 +121,5 @@ yhat.config <- c(
   apikey="4a662eb13647cfb9ed4ca36c5e95c7b3",
   env="https://sandbox.yhathq.com/"
 )
-
+# yhat.config <- c(username="greg", apikey="77ce101c3c7f24cc084e691935adaedb", env="https://sandbox.yhathq.com/")
 yhat.deploy("LendingClub")
