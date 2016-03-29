@@ -27,7 +27,10 @@ df <- df[,poor_coverage==FALSE]
 
 ##################
 
-bad_indicators <- c("Late (16-30 days)", "Late (31-120 days)", "Default", "Charged Off")
+bad_indicators <- c("Late (16-30 days)",
+                    "Late (31-120 days)",
+                    "Default",
+                    "Charged Off")
 
 df$is_bad <- ifelse(df$loan_status %in% bad_indicators, 1,
                     ifelse(df$loan_status=="", NA,
@@ -55,7 +58,8 @@ outcomes
 
 ###############################
 
-#figure out which columns are numeirc (and hence we can look at the distribution)
+#figure out which columns are numeirc (and hence we can look
+# at the distribution)
 numeric_cols <- sapply(df, is.numeric)
 #turn the data into long format (key->value esque)
 df.lng <- melt(df[,numeric_cols], id="is_bad")
@@ -68,8 +72,10 @@ p + geom_density() +
   facet_wrap(~variable, scales="free")
 
 #NOTES:
-# - be careful of using variables that get created AFTER a loan is issued (prinicpal/interest related)
-# - any ID variables that are numeric will be plotted as well. be sure to ignore those as well.
+# - be careful of using variables that get created AFTER a loan is issued
+#   (prinicpal/interest related)
+# - any ID variables that are numeric will be plotted as well. be sure to 
+#   ignore those as well.
 
 #################################
 
@@ -82,14 +88,19 @@ idx <- runif(nrow(df.term)) > 0.75
 train <- df.term[idx==FALSE,]
 test <- df.term[idx==TRUE,]
 
-my.glm <- glm(I(is_bad==TRUE) ~ last_fico_range_low + last_fico_range_high +  is_rent, data=train
-              , na.action=na.omit, family=binomial())
+# basic GLM
+my.glm <- glm(I(is_bad==TRUE) ~ last_fico_range_low + last_fico_range_high +  is_rent,
+              data=train, na.action=na.omit, family=binomial())
+# more advanced GLM
+# my.glm <- glm(I(is_bad==TRUE) ~ last_fico_range_low + last_fico_range_high * is_rent,
+#               data=train, na.action=na.omit, family=binomial())
 
 my.glm$data <- NULL
 summary(my.glm)
 
 translateToScore <- function(df) {
-  # takes log odds and converts them to a traditional credit score between 300 and 850
+  # takes log odds and converts them to a traditional credit score
+  # between 300 and 850
   baseline <- 600
   baseline + predict(my.glm, newdata=df) * (40 / log(2))
 }
@@ -101,7 +112,7 @@ predict(my.glm)
 
 library(yhatr)
 
-yhat.library(plyr)
+yhat.library("plyr")
 
 # execute your code/model
 model.predict <- function(df) {
@@ -110,7 +121,8 @@ model.predict <- function(df) {
   
   output <- data.frame(prob_default=prediction)
 #   output$score <- translateToScore(df)
-  output$decline_code <- ifelse(output$prob_default > 0.3, "Credit score too low", "")
+  output$decline_code <- ifelse(output$prob_default > 0.3, 
+                                "Credit score too low", "")
   
   output
 }
@@ -121,5 +133,6 @@ yhat.config <- c(
   apikey="4a662eb13647cfb9ed4ca36c5e95c7b3",
   env="https://sandbox.yhathq.com/"
 )
-# yhat.config <- c(username="greg", apikey="77ce101c3c7f24cc084e691935adaedb", env="https://sandbox.yhathq.com/")
-yhat.deploy("LendingClub")
+yhat.deploy("LendingClub", confirm=FALSE)
+
+jsonlite::toJSON(train[1,c("last_fico_range_low", "last_fico_range_high", "is_rent")])
