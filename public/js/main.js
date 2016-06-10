@@ -139,7 +139,6 @@ $(document).ready(function() {
   $("#applicant").submit(function(e) {
     e.preventDefault();
     var data = $("#applicant").serializeObject();
-    data.veh_value = parseInt(data.veh_value);
     data.last_fico_range_low = parseInt(data.last_fico_range_low);
     data.last_fico_range_high = parseInt(data.last_fico_range_high);
     data.revol_util = parseInt(data.revol_util);
