@@ -43,14 +43,21 @@ $(document).ready(function() {
     var chart = c3.generate({
       bindto: '#chart-1',
       size: {
-        height: 275
+        height: 300,
+        width: 500
+      },
+      padding: {
+        top: 10
       },
       axis: {
         x: {
           label: 'Score'
         },
         y: {
-          label: '# of Observations'
+          label: {
+            text:'# of Observations',
+            position: 'outer-middle'
+          }
         }
       },
       data: {
@@ -61,12 +68,12 @@ $(document).ready(function() {
           'Applicant': 'line'
         },
         colors: {
-          score: '#00a4e4',
+          score: '#428bca',
           Applicant: 'coral'
         },
       },
       point: {
-        r: 10
+        r: 5
       },
       bar: {
         width: {
@@ -103,14 +110,21 @@ $(document).ready(function() {
     var chart = c3.generate({
       bindto: '#chart-2',
       size: {
-        height: 275
+        height: 400,
+        width: 500
+      },
+      padding: {
+        top: 10
       },
       axis: {
         x: {
           label: 'Probability'
         },
         y: {
-          label: '# of Observations'
+          label: {
+            text:'# of Observations',
+            position: 'outer-middle'
+          }
         }
       },
       data: {
@@ -121,12 +135,12 @@ $(document).ready(function() {
           'Applicant': 'line'
         },
         colors: {
-          probability: '#00a4e4',
+          probability: '#428bca',
           Applicant: 'coral'
         },
       },
       point: {
-        r: 10
+        r: 5
       },
       bar: {
         width: {
@@ -155,7 +169,7 @@ $(document).ready(function() {
         console.log(output);
         var probability = output.result.prob_default;
         var score = output.result.score;
-        
+
         if (score) {
           makeChart(score);
           $("#score-container").removeClass("hide");

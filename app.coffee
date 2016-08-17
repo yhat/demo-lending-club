@@ -85,6 +85,12 @@ app.get "/", (req, res) ->
   data.logo = "img/demo-logo.png"
   res.render "index", data
 
+app.get "/frame", (req, res) ->
+  idx = Math.floor(Math.random()*3)
+  data = examples[idx]
+  res.render "index-iframe", data
+
+
 app.post "/", (req, res) ->
   yh.predict "LendingClub", req.body, (err, result) ->
     res.send(result)
