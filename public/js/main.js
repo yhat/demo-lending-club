@@ -69,7 +69,7 @@ $(document).ready(function() {
         },
         colors: {
           score: '#428bca',
-          Applicant: 'coral'
+          Applicant: '#ed5724'
         },
       },
       point: {
@@ -110,7 +110,7 @@ $(document).ready(function() {
     var chart = c3.generate({
       bindto: '#chart-2',
       size: {
-        height: 400,
+        height: 370,
         width: 500
       },
       padding: {
@@ -136,7 +136,7 @@ $(document).ready(function() {
         },
         colors: {
           probability: '#428bca',
-          Applicant: 'coral'
+          Applicant: '#ed5724'
         },
       },
       point: {
@@ -169,6 +169,7 @@ $(document).ready(function() {
         console.log(output);
         var probability = output.result.prob_default;
         var score = output.result.score;
+        var decline = output.result.decline_code;
 
         if (score) {
           makeChart(score);
@@ -177,6 +178,10 @@ $(document).ready(function() {
         if (probability) {
           makeProbabilityChart(probability)
           $("#prob-container").removeClass("hide");
+          $("#prob_default").text("Probability of default: " + probability[0].toFixed(3));
+        }
+        if (decline[0]) {
+          $("#decline").text("Applicant Declined: " + decline);
         }
         $("#raw-output").text(JSON.stringify(output, null, 2));
       }
