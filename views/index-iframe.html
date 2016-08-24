@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row" style="margin-top:40px;">
+  <div class="row">
     <div class="col-sm-6">
       <form id="applicant" class="form-horizontal">
         <fieldset>
@@ -61,7 +61,7 @@
 
           <div class="form-group">
             <div class="col-lg-10 col-lg-offset-1">
-              <button type="submit" class="btn text-center" style="background-color: ed5724; color:#ffffff; width:100%; font-size:18px;">Score</button>
+              <button type="submit" class="btn text-center" style="background-color: #ed5724; color:#ffffff; width:100%; font-size:18px;">Predict Credit Risk</button>
             </div>
           </div>
         </fieldset>
@@ -70,6 +70,8 @@
     <div id="prob-container" class="col-sm-6 hide">
       <h4 class="text-center">Probability Distribution</h4>
       <div id="chart-2"></div>
+      <h4 id="prob_default"></h4>
+      <div><h4 id="decline" style="color:red;"></h4></div>
     </div>
   </div>
   <hr>
