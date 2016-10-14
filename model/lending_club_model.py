@@ -1,7 +1,8 @@
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
+import numpy as np
 
-cd ~/repos/yhat/demos/heroku-demos/demo-lending-club/model
+# cd ~/github/yhat/demo-lending-club/model
 df = pd.read_csv("./LoanStats3a.csv", skiprows=1)
 df_head = df.head()
 
@@ -58,13 +59,13 @@ class LoanModel(YhatModel):
             decline_code = ""
         odds = glm.predict_log_proba(data)[0][1]
         score = calculate_score(odds)
-            
+
         output = {
             "prob_default": [prob],
             "decline_code": [decline_code],
             "score": [score]
         }
-        
+
         return output
 
 df_term[features].head()
@@ -77,9 +78,6 @@ test = {
 
 LoanModel().execute(test)
 
-yh = Yhat("demo-master", "4a662eb13647cfb9ed4ca36c5e95c7b3", 
-          "https://sandbox.yhathq.com/")
+yh = Yhat("production", "67a3ec51f772e5ba3b39adebdf072ae6",
+          "https://sandbox.c.yhat.com/")
 yh.deploy("LendingClub", LoanModel, globals(), True)
-
-
-
