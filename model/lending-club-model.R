@@ -128,7 +128,7 @@ model.predict <- function(df) {
   # prediction <- predict(my.rf, newdata=df, type="response")
   
   output <- data.frame(prob_default=prediction)
-#   output$score <- translateToScore(df)
+  output$score <- translateToScore(df)
   output$decline_code <- ifelse(output$prob_default > 0.3, 
                                 "Credit score too low", "")
   
