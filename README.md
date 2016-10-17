@@ -6,3 +6,4 @@ App is hosted on heroku
 - Commit and push changes to github
 - Login to heroku
 - Deploy the branch
+
