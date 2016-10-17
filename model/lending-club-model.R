@@ -4,7 +4,7 @@ library(lubridate)
 library(reshape2)
 library(ggplot2)
 
-setwd("~/repos/yhat/demos/heroku-demos/demo-lending-club/model/")
+setwd("~/workspace/github.com/yhat/demo-lending-club/model")
 file <- "./LoanStats3a.csv"
 df <- read.csv(file, h=T, stringsAsFactors=F, skip=1)
 df.head <- head(df, 100)
@@ -98,6 +98,12 @@ my.glm <- glm(I(is_bad==TRUE) ~ last_fico_range_low + last_fico_range_high +  is
 my.glm$data <- NULL
 summary(my.glm)
 
+# library(randomForest)
+# my.rf <- randomForest(is_bad==TRUE ~ last_fico_range_low + last_fico_range_high * is_rent,
+#               data=train, na.action=na.omit)
+
+
+
 translateToScore <- function(df) {
   # takes log odds and converts them to a traditional credit score
   # between 300 and 850
@@ -113,11 +119,13 @@ predict(my.glm)
 library(yhatr)
 
 yhat.library("plyr")
+yhat.library("randomForest")
 
 # execute your code/model
 model.predict <- function(df) {
   df$is_rent <- df$home_ownership=="RENT"
   prediction <- predict(my.glm, newdata=df, type="response")
+  # prediction <- predict(my.rf, newdata=df, type="response")
   
   output <- data.frame(prob_default=prediction)
 #   output$score <- translateToScore(df)
@@ -130,8 +138,8 @@ model.predict(df[1,])
 
 yhat.config <- c(
   username="demo-master",
-  apikey="4a662eb13647cfb9ed4ca36c5e95c7b3",
-  env="https://sandbox.yhathq.com/"
+  apikey="3b0160e10f6d7a94a2528b11b1c9bca1",
+  env="https://sandbox.c.yhat.com/"
 )
 yhat.deploy("LendingClub", confirm=FALSE)
 
