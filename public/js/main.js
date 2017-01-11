@@ -153,12 +153,12 @@ $(document).ready(function() {
   $("#applicant").submit(function(e) {
     e.preventDefault();
     var data = $("#applicant").serializeObject();
-    data.last_fico_range_low = parseInt(data.last_fico_range_low);
-    data.last_fico_range_high = parseInt(data.last_fico_range_high);
-    data.revol_util = parseInt(data.revol_util);
-    data.inq_last_6mths = parseInt(data.inq_last_6mths);
-    data.annual_inc = parseInt(data.annual_inc);
-    data.loan_amnt = parseInt(data.loan_amnt);
+    data.last_fico_range_low = [parseInt(data.last_fico_range_low)];
+    data.last_fico_range_high = [parseInt(data.last_fico_range_high)];
+    data.revol_util = [parseInt(data.revol_util)];
+    data.inq_last_6mths = [parseInt(data.inq_last_6mths)];
+    data.annual_inc = [parseInt(data.annual_inc)];
+    data.loan_amnt = [parseInt(data.loan_amnt)];
     console.log(data)
     $.ajax({
       url: "/",
