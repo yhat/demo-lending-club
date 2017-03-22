@@ -48,8 +48,8 @@ for i,j in enumerate(glm.coef_[0]):
 for i in df_term.loan_amnt.unique()[300:600]:
     bandit.stream('loan_amount', int(i))
 
-sns_plot = sns.distplot(df_term.loan_amnt)
-sns_plot.savefig(bandit.output_dir + "/loan_dist.png")
+# sns_plot = sns.distplot(df_term.loan_amnt)
+# sns_plot.savefig(bandit.output_dir + "/loan_dist.png")
 
 
 def calculate_score(log_odds):
