@@ -1,10 +1,10 @@
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
 import numpy as np
-# import matplotlib
-# matplotlib.use('Agg')
-# import matplotlib.pyplot as plt
-# import seaborn as sns
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 from bandit import *
 
@@ -45,8 +45,12 @@ bandit.metadata.max_load = int(df_term.loan_amnt.describe()['max'])
 for i,j in enumerate(glm.coef_[0]):
     bandit.metadata['coef_' + str(i)] = j
 
+for i in df_term.loan_amnt.sort_values(ascending=False):
+    bandit.stream('loan_amount', int(i))
 
-# from ggplot import *
+sns_plot = sns.distplot(df_term.loan_amnt)
+sns_plot.savefig(bandit.output_dir + "/loan_dist.png")
+
 
 def calculate_score(log_odds):
     # 300 baseline + (40 points equals double risk) * odds
@@ -100,6 +104,6 @@ test = {
 
 LoanModel().execute(test)
 
-yh = Yhat("colin", "67a3ec51f772e5ba3b39adebdf072ae6",
+yh = Yhat("colin", "d325fc5bcb83fc197ee01edb58b4b396",
           "https://sandbox.c.yhat.com/")
 yh.deploy("LendingClub", LoanModel, globals(), True)
