@@ -11,7 +11,7 @@ from bandit import *
 bandit = Bandit()
 
 # cd ~/github/yhat/demo-lending-club/model
-df = pd.read_csv("./LoanStats3a.csv", skiprows=1)
+df = pd.read_csv("./model/LoanStats3a.csv", skiprows=1)
 df_head = df.head()
 
 def is_poor_coverage(row):
@@ -63,6 +63,12 @@ scores = calculate_score(log_probs)
 from yhat import Yhat, YhatModel
 
 class LoanModel(YhatModel):
+    REQUIREMENTS = [
+    "numpy==1.11.3",
+    "pandas==0.19.2",
+    "scikit-learn==0.18.1",
+    "scipy==0.18.1"
+    ]
     def execute(self, data):
         data['is_rent'] = data['home_ownership']=="RENT"
         data = {k: [v] for k,v in data.items()}
