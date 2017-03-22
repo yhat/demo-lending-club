@@ -1,6 +1,14 @@
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
 import numpy as np
+# import matplotlib
+# matplotlib.use('Agg')
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+
+from bandit import *
+
+bandit = Bandit()
 
 # cd ~/github/yhat/demo-lending-club/model
 df = pd.read_csv("./LoanStats3a.csv", skiprows=1)
@@ -22,6 +30,7 @@ bad_indicators = [
     "Default",
     "Charged Off"
 ]
+
 df_term['is_rent'] = df_term.home_ownership=="RENT"
 df_term['is_bad'] = df_term.loan_status.apply(lambda x: x in bad_indicators)
 features = ['last_fico_range_low', 'last_fico_range_high', 'is_rent']
@@ -29,6 +38,13 @@ glm = LogisticRegression()
 glm.fit(df_term[features], df_term.is_bad)
 
 glm.predict_log_proba(df_term[features].head())
+
+bandit.metadata.avg_loan = int(df_term.loan_amnt.describe()['mean'])
+bandit.metadata.max_load = int(df_term.loan_amnt.describe()['max'])
+
+for i,j in enumerate(glm.coef_[0]):
+    bandit.metadata['coef_' + str(i)] = j
+
 
 # from ggplot import *
 
@@ -78,6 +94,6 @@ test = {
 
 LoanModel().execute(test)
 
-yh = Yhat("production", "67a3ec51f772e5ba3b39adebdf072ae6",
+yh = Yhat("colin", "67a3ec51f772e5ba3b39adebdf072ae6",
           "https://sandbox.c.yhat.com/")
 yh.deploy("LendingClub", LoanModel, globals(), True)
