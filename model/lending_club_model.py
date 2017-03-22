@@ -45,7 +45,7 @@ bandit.metadata.max_load = int(df_term.loan_amnt.describe()['max'])
 for i,j in enumerate(glm.coef_[0]):
     bandit.metadata['coef_' + str(i)] = j
 
-for i in df_term.loan_amnt.sort_values(ascending=False):
+for i in df_term.loan_amnt.unique().sort_values(ascending=False):
     bandit.stream('loan_amount', int(i))
 
 sns_plot = sns.distplot(df_term.loan_amnt)
