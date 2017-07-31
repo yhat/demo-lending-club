@@ -1,9 +1,17 @@
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from bandit import *
+
+bandit = Bandit()
 
 # cd ~/github/yhat/demo-lending-club/model
-df = pd.read_csv("./LoanStats3a.csv", skiprows=1)
+df = pd.read_csv("./model/LoanStats3a.csv", skiprows=1)
 df_head = df.head()
 
 def is_poor_coverage(row):
@@ -22,6 +30,7 @@ bad_indicators = [
     "Default",
     "Charged Off"
 ]
+
 df_term['is_rent'] = df_term.home_ownership=="RENT"
 df_term['is_bad'] = df_term.loan_status.apply(lambda x: x in bad_indicators)
 features = ['last_fico_range_low', 'last_fico_range_high', 'is_rent']
@@ -30,7 +39,18 @@ glm.fit(df_term[features], df_term.is_bad)
 
 glm.predict_log_proba(df_term[features].head())
 
-# from ggplot import *
+bandit.metadata.avg_loan = int(df_term.loan_amnt.describe()['mean'])
+bandit.metadata.max_load = int(df_term.loan_amnt.describe()['max'])
+
+for i,j in enumerate(glm.coef_[0]):
+    bandit.metadata['coef_' + str(i)] = j
+
+for i in df_term.loan_amnt.unique()[300:600]:
+    bandit.stream('loan_amount', int(i))
+
+# sns_plot = sns.distplot(df_term.loan_amnt)
+# sns_plot.savefig(bandit.output_dir + "/loan_dist.png")
+
 
 def calculate_score(log_odds):
     # 300 baseline + (40 points equals double risk) * odds
@@ -47,6 +67,12 @@ scores = calculate_score(log_probs)
 from yhat import Yhat, YhatModel
 
 class LoanModel(YhatModel):
+    REQUIREMENTS = [
+    "numpy==1.11.3",
+    "pandas==0.19.2",
+    "scikit-learn==0.18.1",
+    "scipy==0.18.1"
+    ]
     def execute(self, data):
         data['is_rent'] = data['home_ownership']=="RENT"
         data = {k: [v] for k,v in data.items()}
@@ -78,6 +104,6 @@ test = {
 
 LoanModel().execute(test)
 
-yh = Yhat("production", "67a3ec51f772e5ba3b39adebdf072ae6",
+yh = Yhat("colin", "d325fc5bcb83fc197ee01edb58b4b396",
           "https://sandbox.c.yhat.com/")
 yh.deploy("LendingClub", LoanModel, globals(), True)
